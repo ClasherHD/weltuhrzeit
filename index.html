@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uhrzeit Deutschland & Finnland</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-overlay"></div>
+    <main class="container">
+        <header>
+            <h1>Weltzeituhr</h1>
+            <div class="controls">
+                <button id="toggle-format" class="glass-btn">24h / 12h</button>
+            </div>
+        </header>
+
+        <div class="search-container">
+            <input type="text" id="search-input" class="glass-input" placeholder="Land suchen (z.B. Japan, Kanada)...">
+        </div>
+
+        <div id="loading" class="loading-spinner">Lade Länderdaten...</div>
+        
+        <div class="mini-grid" id="mini-container"></div>
+        <div class="countries-grid" id="countries-container" style="display: none;"></div>
+    </main>
+
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-content" id="modal-content">
+            <!-- Modal card injected via JS -->
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.43/moment-timezone-with-data.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

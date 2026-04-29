@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Land Details</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-overlay"></div>
+    <main class="container">
+        <header>
+            <h1>Details</h1>
+            <div class="controls">
+                <a href="index.html" class="glass-btn">Zurück zur Übersicht</a>
+                <button id="toggle-format" class="glass-btn">24h / 12h</button>
+            </div>
+        </header>
+        
+        <section class="clock-section" id="detail-section">
+            <div class="card glass">
+                <div class="country-info">
+                    <img src="" width="40" alt="Flagge" class="flag-img" id="detail-flag">
+                    <div class="name-box">
+                        <h2 class="country-name" id="detail-name">Lade...</h2>
+                        <span class="greeting" id="detail-greeting">Guten Tag</span>
+                    </div>
+                </div>
+                <div class="time-display">
+                    <span class="time" id="detail-time">00:00:00</span>
+                    <span class="date" id="detail-date">Montag, 1. Januar</span>
+                </div>
+                
+                <div class="card-divider"></div>
+                
+                <div class="meta-grid">
+                    <div class="meta-item">
+                        <span class="meta-icon">🏛️</span>
+                        <div class="meta-text">
+                            <span class="meta-label">Hauptstadt</span>
+                            <span class="meta-value" id="detail-capital">Lade...</span>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon" id="detail-weather-icon">🌡️</span>
+                        <div class="meta-text">
+                            <span class="meta-label">Wetter</span>
+                            <span class="meta-value" id="detail-weather">Lade...</span>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">🌍</span>
+                        <div class="meta-text">
+                            <span class="meta-label">Zeitzone</span>
+                            <span class="meta-value" id="detail-tz">Lade...</span>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">💶</span>
+                        <div class="meta-text">
+                            <span class="meta-label">Währung</span>
+                            <span class="meta-value" id="detail-currency">Lade...</span>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">🗣️</span>
+                        <div class="meta-text">
+                            <span class="meta-label">Sprache</span>
+                            <span class="meta-value" id="detail-language">Lade...</span>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">🎉</span>
+                        <div class="meta-text">
+                            <span class="meta-label">Nächster Feiertag</span>
+                            <span class="meta-value" id="detail-holiday">Lade...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.43/moment-timezone-with-data.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
