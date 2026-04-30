@@ -2,7 +2,8 @@ let is24Hour = true;
 let allCountries = [];
 let displayedCountries = [];
 let modalCountry = null;
-let favorites = JSON.parse(localStorage.getItem('clockFavorites')) || [];
+let favorites = [];
+try { favorites = JSON.parse(localStorage.getItem('clockFavorites')) || []; } catch(e) {}
 let showFavoritesOnly = false;
 
 // Helper Functions
@@ -212,7 +213,7 @@ window.toggleFavorite = function(countryId, event) {
     } else {
         favorites.push(countryId);
     }
-    localStorage.setItem('clockFavorites', JSON.stringify(favorites));
+    try { localStorage.setItem('clockFavorites', JSON.stringify(favorites)); } catch(e) {}
     
     const searchInput = document.getElementById('search-input');
     if (searchInput && searchInput.value.trim().length > 0) {
