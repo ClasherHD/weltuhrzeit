@@ -26,7 +26,7 @@ function getWeatherIcon(code) {
 // Fetch and Process Data
 async function fetchCountries() {
     try {
-        const response = await fetch('https://restcountries.com/v3.1/all?fields=name,cca2,flags,capital,languages,currencies,translations,capitalInfo,latlng,population,region,subregion,area,car,tld,idd');
+        const response = await fetch('https://restcountries.com/v3.1/all?fields=name,cca2,flags,capital,languages,currencies,translations,capitalInfo,latlng');
         if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
         const data = await response.json();
         
@@ -77,14 +77,7 @@ async function fetchCountries() {
                 language: language,
                 currency: currencies,
                 lat: lat,
-                lng: lng,
-                population: c.population || 0,
-                region: c.region || 'Unbekannt',
-                subregion: c.subregion || '',
-                area: c.area || 0,
-                tld: (c.tld && c.tld.length > 0) ? c.tld.join(', ') : 'Unbekannt',
-                idd: (c.idd && c.idd.root) ? c.idd.root + (c.idd.suffixes ? c.idd.suffixes[0] : '') : 'Unbekannt',
-                drivingSide: (c.car && c.car.side) ? (c.car.side === 'right' ? 'Rechtsverkehr' : 'Linksverkehr') : 'Unbekannt'
+                lng: lng
             };
         }).sort((a, b) => a.id.localeCompare(b.id));
 
@@ -306,30 +299,37 @@ function initIndex() {
 }
 
 // --- Details Page Logic ---
-function initDetails() {
+async function initDetails() {
     const urlParams = new URLSearchParams(window.location.search);
     const countryParam = urlParams.get('country');
     const country = allCountries.find(c => c.id === countryParam);
     if(country) {
         loadDynamicData(country, 'detail-');
         
-        const popEl = document.getElementById('detail-population');
-        if (popEl) popEl.textContent = new Intl.NumberFormat('de-DE').format(country.population);
-        
-        const regEl = document.getElementById('detail-region');
-        if (regEl) regEl.textContent = country.subregion ? `${country.region} (${country.subregion})` : country.region;
-        
-        const areaEl = document.getElementById('detail-area');
-        if (areaEl) areaEl.textContent = new Intl.NumberFormat('de-DE').format(country.area) + ' km²';
-        
-        const tldEl = document.getElementById('detail-tld');
-        if (tldEl) tldEl.textContent = country.tld;
-        
-        const iddEl = document.getElementById('detail-idd');
-        if (iddEl) iddEl.textContent = country.idd;
-        
-        const drivingEl = document.getElementById('detail-driving');
-        if (drivingEl) drivingEl.textContent = country.drivingSide;
+        try {
+            const res = await fetch(`https://restcountries.com/v3.1/alpha/${country.id}?fields=population,region,subregion,area,car,tld,idd`);
+            if(res.ok) {
+                const extraData = await res.json();
+                
+                const popEl = document.getElementById('detail-population');
+                if (popEl) popEl.textContent = new Intl.NumberFormat('de-DE').format(extraData.population || 0);
+                
+                const regEl = document.getElementById('detail-region');
+                if (regEl) regEl.textContent = extraData.subregion ? `${extraData.region} (${extraData.subregion})` : extraData.region;
+                
+                const areaEl = document.getElementById('detail-area');
+                if (areaEl) areaEl.textContent = new Intl.NumberFormat('de-DE').format(extraData.area || 0) + ' km²';
+                
+                const tldEl = document.getElementById('detail-tld');
+                if (tldEl) tldEl.textContent = (extraData.tld && extraData.tld.length > 0) ? extraData.tld.join(', ') : 'Unbekannt';
+                
+                const iddEl = document.getElementById('detail-idd');
+                if (iddEl) iddEl.textContent = (extraData.idd && extraData.idd.root) ? extraData.idd.root + (extraData.idd.suffixes ? extraData.idd.suffixes[0] : '') : 'Unbekannt';
+                
+                const drivingEl = document.getElementById('detail-driving');
+                if (drivingEl) drivingEl.textContent = (extraData.car && extraData.car.side) ? (extraData.car.side === 'right' ? 'Rechtsverkehr' : 'Linksverkehr') : 'Unbekannt';
+            }
+        } catch(e) {}
     }
     updateClocks();
 }
