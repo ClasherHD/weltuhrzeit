@@ -2,6 +2,8 @@ let is24Hour = true;
 let allCountries = [];
 let displayedCountries = [];
 let modalCountry = null;
+let favorites = JSON.parse(localStorage.getItem('clockFavorites')) || [];
+let showFavoritesOnly = false;
 
 // Helper Functions
 function getGreeting(hours) {
@@ -131,8 +133,10 @@ async function loadDynamicData(country, prefix) {
 }
 
 function createFullCardHTML(country, prefix) {
+    const isFav = favorites.includes(country.id);
     return `
         <div class="card glass" style="position: relative; width: 100%;">
+            <button id="${prefix}fav-${country.id}" class="fav-btn ${isFav ? 'active' : ''}" style="${prefix === 'modal-' ? 'left: 10px; right: auto;' : ''}" onclick="toggleFavorite('${country.id}', event)">${isFav ? '⭐' : '☆'}</button>
             ${prefix === 'modal-' ? '<button class="close-btn" onclick="closeModal()">×</button>' : ''}
             <div class="country-info">
                 <img src="${country.flag}" width="40" alt="${country.name} Flagge" class="flag-img">
@@ -200,6 +204,40 @@ function createFullCardHTML(country, prefix) {
     `;
 }
 
+// --- Favorites Logic ---
+window.toggleFavorite = function(countryId, event) {
+    if (event) event.stopPropagation();
+    if (favorites.includes(countryId)) {
+        favorites = favorites.filter(id => id !== countryId);
+    } else {
+        favorites.push(countryId);
+    }
+    localStorage.setItem('clockFavorites', JSON.stringify(favorites));
+    
+    const searchInput = document.getElementById('search-input');
+    if (searchInput && searchInput.value.trim().length > 0) {
+        searchInput.dispatchEvent(new Event('input'));
+    } else if (document.getElementById('mini-container')?.style.display !== 'none') {
+        renderMiniGrid();
+    }
+    
+    if (modalCountry && modalCountry.id === countryId) {
+        const btn = document.getElementById(`modal-fav-${countryId}`);
+        if (btn) {
+            const isFav = favorites.includes(countryId);
+            btn.classList.toggle('active', isFav);
+            btn.textContent = isFav ? '⭐' : '☆';
+        }
+    }
+    
+    const detailBtn = document.getElementById('detail-fav');
+    if (detailBtn) {
+        const isFav = favorites.includes(countryId);
+        detailBtn.classList.toggle('active', isFav);
+        detailBtn.textContent = isFav ? '⭐' : '☆';
+    }
+};
+
 // --- Modal Logic ---
 window.openModal = function(countryId) {
     const country = allCountries.find(c => c.id === countryId);
@@ -234,12 +272,21 @@ function renderMiniGrid() {
     if (container) container.style.display = 'none';
     miniContainer.style.display = 'grid';
     miniContainer.innerHTML = '';
+    
+    const countriesToRender = showFavoritesOnly ? allCountries.filter(c => favorites.includes(c.id)) : allCountries;
+    
+    if (countriesToRender.length === 0 && showFavoritesOnly) {
+        miniContainer.innerHTML = '<div style="text-align:center; padding: 2rem; color: var(--text-muted); width: 100%; grid-column: 1 / -1;">Noch keine Favoriten gespeichert.</div>';
+        return;
+    }
 
-    allCountries.forEach(country => {
+    countriesToRender.forEach(country => {
+        const isFav = favorites.includes(country.id);
         const div = document.createElement('div');
         div.className = 'mini-card';
         div.onclick = () => openModal(country.id);
         div.innerHTML = `
+            <button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${country.id}', event)">${isFav ? '⭐' : '☆'}</button>
             <img src="${country.flag}" alt="${country.name}" class="mini-flag">
             <span class="mini-code">${country.id}</span>
         `;
@@ -277,10 +324,25 @@ function renderIndexGrid(countriesToRender) {
 function initIndex() {
     const searchInput = document.getElementById('search-input');
     const loading = document.getElementById('loading');
+    const toggleFavBtn = document.getElementById('toggle-fav-filter');
     
     if (loading) loading.style.display = 'none';
 
     renderMiniGrid();
+    
+    if (toggleFavBtn) {
+        toggleFavBtn.addEventListener('click', () => {
+            showFavoritesOnly = !showFavoritesOnly;
+            toggleFavBtn.style.background = showFavoritesOnly ? 'rgba(255, 215, 0, 0.2)' : '';
+            toggleFavBtn.style.color = showFavoritesOnly ? '#ffd700' : '';
+            
+            if (searchInput && searchInput.value.trim().length > 0) {
+                searchInput.dispatchEvent(new Event('input'));
+            } else {
+                renderMiniGrid();
+            }
+        });
+    }
 
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
@@ -290,6 +352,7 @@ function initIndex() {
                 return;
             }
             const matches = allCountries.filter(c => {
+                if (showFavoritesOnly && !favorites.includes(c.id)) return false;
                 const nameDe = c.name ? c.name.toLowerCase() : '';
                 const nameEn = c.englishName ? c.englishName.toLowerCase() : '';
                 return nameDe.includes(term) || nameEn.includes(term);
@@ -305,6 +368,13 @@ async function initDetails() {
     const countryParam = urlParams.get('country');
     const country = allCountries.find(c => c.id === countryParam);
     if(country) {
+        const detailFav = document.getElementById('detail-fav');
+        if (detailFav) {
+            const isFav = favorites.includes(country.id);
+            detailFav.classList.toggle('active', isFav);
+            detailFav.textContent = isFav ? '⭐' : '☆';
+        }
+
         const elFlag = document.getElementById('detail-flag');
         if (elFlag) elFlag.src = country.flag;
         

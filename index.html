@@ -28,8 +28,9 @@
             </div>
         </header>
 
-        <div class="search-container">
-            <input type="text" id="search-input" class="glass-input" placeholder="Land suchen (z.B. Japan, Kanada)...">
+        <div class="search-container" style="display: flex; gap: 1rem; align-items: center; justify-content: center;">
+            <input type="text" id="search-input" class="glass-input" placeholder="Land suchen (z.B. Japan, Kanada)..." style="flex: 1; max-width: 600px;">
+            <button id="toggle-fav-filter" class="glass-btn" style="padding: 1rem 1.5rem;">⭐ Favoriten</button>
         </div>
 
         <div id="loading" class="loading-spinner">Lade Länderdaten...</div>
