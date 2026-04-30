@@ -94,18 +94,19 @@ async function fetchCountries() {
 }
 
 async function loadDynamicData(country, prefix) {
+    const suffix = prefix === 'detail-' ? '' : `-${country.id}`;
     // Weather
     try {
         const wRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${country.lat}&longitude=${country.lng}&current_weather=true`);
         const wData = await wRes.json();
         const temp = wData.current_weather.temperature;
         const code = wData.current_weather.weathercode;
-        const elWeath = document.getElementById(`${prefix}weather-${country.id}`);
-        const elIcon = document.getElementById(`${prefix}weather-icon-${country.id}`);
+        const elWeath = document.getElementById(`${prefix}weather${suffix}`);
+        const elIcon = document.getElementById(`${prefix}weather-icon${suffix}`);
         if(elWeath) elWeath.textContent = `${temp}°C`;
         if(elIcon) elIcon.textContent = getWeatherIcon(code);
     } catch(e) {
-        const elWeath = document.getElementById(`${prefix}weather-${country.id}`);
+        const elWeath = document.getElementById(`${prefix}weather${suffix}`);
         if(elWeath) elWeath.textContent = 'Keine Daten';
     }
 
@@ -114,7 +115,7 @@ async function loadDynamicData(country, prefix) {
         const hRes = await fetch(`https://date.nager.at/api/v3/NextPublicHolidays/${country.id}`);
         if (!hRes.ok) throw new Error();
         const hData = await hRes.json();
-        const elHol = document.getElementById(`${prefix}holiday-${country.id}`);
+        const elHol = document.getElementById(`${prefix}holiday${suffix}`);
         if (hData && hData.length > 0) {
             const next = hData[0];
             const parts = next.date.split('-');
@@ -124,7 +125,7 @@ async function loadDynamicData(country, prefix) {
             if(elHol) elHol.textContent = 'Keine in Kürze';
         }
     } catch(e) {
-        const elHol = document.getElementById(`${prefix}holiday-${country.id}`);
+        const elHol = document.getElementById(`${prefix}holiday${suffix}`);
         if(elHol) elHol.textContent = 'Keine Daten';
     }
 }
@@ -304,6 +305,21 @@ async function initDetails() {
     const countryParam = urlParams.get('country');
     const country = allCountries.find(c => c.id === countryParam);
     if(country) {
+        const elFlag = document.getElementById('detail-flag');
+        if (elFlag) elFlag.src = country.flag;
+        
+        const elName = document.getElementById('detail-name');
+        if (elName) elName.textContent = country.name;
+        
+        const elCap = document.getElementById('detail-capital');
+        if (elCap) elCap.textContent = country.capital;
+        
+        const elLang = document.getElementById('detail-language');
+        if (elLang) elLang.textContent = country.language;
+        
+        const elCurr = document.getElementById('detail-currency');
+        if (elCurr) elCurr.textContent = country.currency;
+
         loadDynamicData(country, 'detail-');
         
         try {
@@ -346,10 +362,11 @@ function initPage() {
 // Clock Updates
 function updateClockDOM(country, prefix, now, options, dateOptions) {
     try {
-        const elTime = document.getElementById(`${prefix}time-${country.id}`);
-        const elDate = document.getElementById(`${prefix}date-${country.id}`);
-        const elGreeting = document.getElementById(`${prefix}greeting-${country.id}`);
-        const elTz = document.getElementById(`${prefix}tz-${country.id}`);
+        const suffix = prefix === 'detail-' ? '' : `-${country.id}`;
+        const elTime = document.getElementById(`${prefix}time${suffix}`);
+        const elDate = document.getElementById(`${prefix}date${suffix}`);
+        const elGreeting = document.getElementById(`${prefix}greeting${suffix}`);
+        const elTz = document.getElementById(`${prefix}tz${suffix}`);
         
         if (elTime && elDate && elGreeting) {
             const localTime = new Date(now.toLocaleString('en-US', { timeZone: country.tz }));
