@@ -462,3 +462,52 @@ header h1 {
     border-color: rgba(255, 215, 0, 0.5);
     text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
+
+/* Cookie Banner */
+.cookie-banner {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 600px;
+    padding: 1.5rem;
+    z-index: 1000;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border-radius: 16px;
+    animation: slideUp 0.5s ease forwards;
+}
+
+.cookie-content h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    color: var(--text-main);
+}
+
+.cookie-content p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 1.2rem;
+    line-height: 1.4;
+}
+
+.cookie-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+@media (max-width: 500px) {
+    .cookie-buttons {
+        flex-direction: column;
+    }
+    .cookie-buttons button {
+        width: 100%;
+    }
+}
+
+@keyframes slideUp {
+    from { bottom: -100px; opacity: 0; }
+    to { bottom: 20px; opacity: 1; }
+}

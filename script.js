@@ -15,15 +15,15 @@ function getGreeting(hours) {
 }
 
 function getWeatherIcon(code) {
-    if (code === 0) return '☀️'; 
-    if (code >= 1 && code <= 3) return '⛅'; 
-    if (code >= 45 && code <= 48) return '🌫️'; 
-    if (code >= 51 && code <= 67) return '🌧️'; 
-    if (code >= 71 && code <= 77) return '❄️'; 
-    if (code >= 80 && code <= 82) return '🌦️'; 
-    if (code >= 85 && code <= 86) return '🌨️'; 
-    if (code >= 95) return '⛈️'; 
-    return '🌡️';
+    if (code === 0) return 'â˜€ï¸'; 
+    if (code >= 1 && code <= 3) return 'â›…'; 
+    if (code >= 45 && code <= 48) return 'ðŸŒ«ï¸'; 
+    if (code >= 51 && code <= 67) return 'ðŸŒ§ï¸'; 
+    if (code >= 71 && code <= 77) return 'â„ï¸'; 
+    if (code >= 80 && code <= 82) return 'ðŸŒ¦ï¸'; 
+    if (code >= 85 && code <= 86) return 'ðŸŒ¨ï¸'; 
+    if (code >= 95) return 'â›ˆï¸'; 
+    return 'ðŸŒ¡ï¸';
 }
 
 // Fetch and Process Data
@@ -86,7 +86,7 @@ async function fetchCountries() {
 
         initPage();
     } catch (e) {
-        console.error("Fehler beim Laden der Länder:", e);
+        console.error("Fehler beim Laden der LÃ¤nder:", e);
         const loading = document.getElementById('loading');
         if (loading) {
             loading.textContent = "Fehler beim Laden: " + e.message;
@@ -106,7 +106,7 @@ async function loadDynamicData(country, prefix) {
         const code = wData.current_weather.weathercode;
         const elWeath = document.getElementById(`${prefix}weather${suffix}`);
         const elIcon = document.getElementById(`${prefix}weather-icon${suffix}`);
-        if(elWeath) elWeath.textContent = `${temp}°C`;
+        if(elWeath) elWeath.textContent = `${temp}Â°C`;
         if(elIcon) elIcon.textContent = getWeatherIcon(code);
     } catch(e) {
         const elWeath = document.getElementById(`${prefix}weather${suffix}`);
@@ -125,7 +125,7 @@ async function loadDynamicData(country, prefix) {
             const formatted = `${parts[2]}.${parts[1]}.${parts[0]}`;
             if(elHol) elHol.textContent = `${next.localName} (${formatted})`;
         } else {
-            if(elHol) elHol.textContent = 'Keine in Kürze';
+            if(elHol) elHol.textContent = 'Keine in KÃ¼rze';
         }
     } catch(e) {
         const elHol = document.getElementById(`${prefix}holiday${suffix}`);
@@ -137,8 +137,8 @@ function createFullCardHTML(country, prefix) {
     const isFav = favorites.includes(country.id);
     return `
         <div class="card glass" style="position: relative; width: 100%;">
-            <button id="${prefix}fav-${country.id}" class="fav-btn ${isFav ? 'active' : ''}" style="${prefix === 'modal-' ? 'left: 10px; right: auto;' : ''}" onclick="toggleFavorite('${country.id}', event)">${isFav ? '⭐' : '☆'}</button>
-            ${prefix === 'modal-' ? '<button class="close-btn" onclick="closeModal()">×</button>' : ''}
+            <button id="${prefix}fav-${country.id}" class="fav-btn ${isFav ? 'active' : ''}" style="${prefix === 'modal-' ? 'left: 10px; right: auto;' : ''}" onclick="toggleFavorite('${country.id}', event)">${isFav ? 'â­' : 'â˜†'}</button>
+            ${prefix === 'modal-' ? '<button class="close-btn" onclick="closeModal()">Ã—</button>' : ''}
             <div class="country-info">
                 <img src="${country.flag}" width="40" alt="${country.name} Flagge" class="flag-img">
                 <div class="name-box">
@@ -155,44 +155,44 @@ function createFullCardHTML(country, prefix) {
                 
             <div class="meta-grid">
                 <div class="meta-item">
-                    <span class="meta-icon">🏛️</span>
+                    <span class="meta-icon">ðŸ›ï¸</span>
                     <div class="meta-text">
                         <span class="meta-label">Hauptstadt</span>
                         <span class="meta-value" id="${prefix}capital-${country.id}">${country.capital}</span>
                     </div>
                 </div>
                 <div class="meta-item">
-                    <span class="meta-icon" id="${prefix}weather-icon-${country.id}">🌡️</span>
+                    <span class="meta-icon" id="${prefix}weather-icon-${country.id}">ðŸŒ¡ï¸</span>
                     <div class="meta-text">
                         <span class="meta-label">Wetter</span>
                         <span class="meta-value" id="${prefix}weather-${country.id}">Lade...</span>
                     </div>
                 </div>
                 <div class="meta-item">
-                    <span class="meta-icon">🌍</span>
+                    <span class="meta-icon">ðŸŒ</span>
                     <div class="meta-text">
                         <span class="meta-label">Zeitzone</span>
                         <span class="meta-value" id="${prefix}tz-${country.id}">Lade...</span>
                     </div>
                 </div>
                 <div class="meta-item">
-                    <span class="meta-icon">💶</span>
+                    <span class="meta-icon">ðŸ’¶</span>
                     <div class="meta-text">
-                        <span class="meta-label">Währung</span>
+                        <span class="meta-label">WÃ¤hrung</span>
                         <span class="meta-value" id="${prefix}currency-${country.id}">${country.currency}</span>
                     </div>
                 </div>
                 <div class="meta-item">
-                    <span class="meta-icon">🗣️</span>
+                    <span class="meta-icon">ðŸ—£ï¸</span>
                     <div class="meta-text">
                         <span class="meta-label">Sprache</span>
                         <span class="meta-value" id="${prefix}language-${country.id}">${country.language}</span>
                     </div>
                 </div>
                 <div class="meta-item">
-                    <span class="meta-icon">🎉</span>
+                    <span class="meta-icon">ðŸŽ‰</span>
                     <div class="meta-text">
-                        <span class="meta-label">Nächster Feiertag</span>
+                        <span class="meta-label">NÃ¤chster Feiertag</span>
                         <span class="meta-value" id="${prefix}holiday-${country.id}">Lade...</span>
                     </div>
                 </div>
@@ -227,7 +227,7 @@ window.toggleFavorite = function(countryId, event) {
         if (btn) {
             const isFav = favorites.includes(countryId);
             btn.classList.toggle('active', isFav);
-            btn.textContent = isFav ? '⭐' : '☆';
+            btn.textContent = isFav ? 'â­' : 'â˜†';
         }
     }
     
@@ -235,7 +235,7 @@ window.toggleFavorite = function(countryId, event) {
     if (detailBtn) {
         const isFav = favorites.includes(countryId);
         detailBtn.classList.toggle('active', isFav);
-        detailBtn.textContent = isFav ? '⭐' : '☆';
+        detailBtn.textContent = isFav ? 'â­' : 'â˜†';
     }
 };
 
@@ -287,7 +287,7 @@ function renderMiniGrid() {
         div.className = 'mini-card';
         div.onclick = () => openModal(country.id);
         div.innerHTML = `
-            <button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${country.id}', event)">${isFav ? '⭐' : '☆'}</button>
+            <button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${country.id}', event)">${isFav ? 'â­' : 'â˜†'}</button>
             <img src="${country.flag}" alt="${country.name}" class="mini-flag">
             <span class="mini-code">${country.id}</span>
         `;
@@ -306,7 +306,7 @@ function renderIndexGrid(countriesToRender) {
     container.style.display = 'grid';
     
     if (countriesToRender.length === 0) {
-        container.innerHTML = '<div style="text-align:center; padding: 2rem; color: var(--text-muted);">Keine Länder gefunden.</div>';
+        container.innerHTML = '<div style="text-align:center; padding: 2rem; color: var(--text-muted);">Keine LÃ¤nder gefunden.</div>';
         return;
     }
     
@@ -373,7 +373,7 @@ async function initDetails() {
         if (detailFav) {
             const isFav = favorites.includes(country.id);
             detailFav.classList.toggle('active', isFav);
-            detailFav.textContent = isFav ? '⭐' : '☆';
+            detailFav.textContent = isFav ? 'â­' : 'â˜†';
         }
 
         const elFlag = document.getElementById('detail-flag');
@@ -405,7 +405,7 @@ async function initDetails() {
                 if (regEl) regEl.textContent = extraData.subregion ? `${extraData.region} (${extraData.subregion})` : extraData.region;
                 
                 const areaEl = document.getElementById('detail-area');
-                if (areaEl) areaEl.textContent = new Intl.NumberFormat('de-DE').format(extraData.area || 0) + ' km²';
+                if (areaEl) areaEl.textContent = new Intl.NumberFormat('de-DE').format(extraData.area || 0) + ' kmÂ²';
                 
                 const tldEl = document.getElementById('detail-tld');
                 if (tldEl) tldEl.textContent = (extraData.tld && extraData.tld.length > 0) ? extraData.tld.join(', ') : 'Unbekannt';
@@ -490,3 +490,58 @@ if(loading) loading.style.display = 'block';
 
 fetchCountries();
 setInterval(updateClocks, 1000);
+
+// --- Analytics & Cookie Consent ---
+const GA_MEASUREMENT_ID = 'G-F7HTCX5654';
+
+function loadGoogleAnalytics() {
+    if (document.getElementById('ga-script')) return;
+    
+    const script = document.createElement('script');
+    script.id = 'ga-script';
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_MEASUREMENT_ID;
+    document.head.appendChild(script);
+
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', GA_MEASUREMENT_ID, { 'anonymize_ip': true });
+}
+
+function initCookieConsent() {
+    let consent = null;
+    try { consent = localStorage.getItem('cookieConsent'); } catch(e) {}
+    
+    if (consent === 'granted') {
+        loadGoogleAnalytics();
+    } else if (!consent) {
+        const banner = document.createElement('div');
+        banner.className = 'cookie-banner glass';
+        banner.innerHTML = `
+            <div class="cookie-content">
+                <h3>🍪 Privatsphäre & Tracking</h3>
+                <p>Diese Website verwendet Google Analytics, um zu verstehen, welche Länder am häufigsten aufgerufen werden und wie viele Besucher wir haben. Die Daten werden anonymisiert erfasst.</p>
+                <div class="cookie-buttons">
+                    <button id="cookie-accept" class="glass-btn" style="background: rgba(46, 204, 113, 0.2); border-color: rgba(46, 204, 113, 0.5); color: #2ecc71;">Erlauben & Unterstützen</button>
+                    <button id="cookie-decline" class="glass-btn" style="background: rgba(231, 76, 60, 0.2); border-color: rgba(231, 76, 60, 0.5); color: #e74c3c;">Nur essenzielle</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(banner);
+        
+        document.getElementById('cookie-accept').addEventListener('click', () => {
+            try { localStorage.setItem('cookieConsent', 'granted'); } catch(e) {}
+            banner.style.display = 'none';
+            loadGoogleAnalytics();
+        });
+        
+        document.getElementById('cookie-decline').addEventListener('click', () => {
+            try { localStorage.setItem('cookieConsent', 'denied'); } catch(e) {}
+            banner.style.display = 'none';
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', initCookieConsent);
