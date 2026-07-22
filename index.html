@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weltzeituhr Dashboard – Wetter & Feiertage</title>
-    <meta name="description" content="Live-Uhrzeiten, Wetterdaten und Feiertage für alle Länder der Welt in einem modernen Dashboard.">
-    
+    <meta name="description"
+        content="Live-Uhrzeiten, Wetterdaten und Feiertage für alle Länder der Welt in einem modernen Dashboard.">
+
     <!-- Open Graph / Facebook / WhatsApp -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://clasherhd.github.io/weltuhrzeit/">
     <meta property="og:title" content="Weltzeituhr Dashboard – Die ganze Welt im Blick">
-    <meta property="og:description" content="Echtzeit-Uhrzeiten, aktuelles Wetter und kommende Feiertage für über 250 Länder.">
+    <meta property="og:description"
+        content="Echtzeit-Uhrzeiten, aktuelles Wetter und kommende Feiertage für über 250 Länder.">
     <meta property="og:image" content="https://raw.githubusercontent.com/ClasherHD/weltuhrzeit/main/preview.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,7 +21,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css?v=3">
 </head>
+
 <body>
+    <video id="mc-video-bg" class="mc-video-bg" autoplay loop muted playsinline preload="auto">
+        <source src="Timelapse_compressed.mp4" type="video/mp4">
+        <source src="Timelapse.mp4" type="video/mp4">
+    </video>
     <div class="background-overlay"></div>
     <main class="container">
         <header>
@@ -29,12 +37,13 @@
         </header>
 
         <div class="search-container" style="display: flex; gap: 1rem; align-items: center; justify-content: center;">
-            <input type="text" id="search-input" class="glass-input" placeholder="Land suchen (z.B. Japan, Kanada)..." style="flex: 1; max-width: 600px;">
-            <button id="toggle-fav-filter" class="glass-btn" style="padding: 1rem 1.5rem;">⭐ Favoriten</button>
+            <input type="text" id="search-input" class="glass-input" placeholder="Land suchen (z.B. Japan, Kanada)..."
+                style="flex: 1; max-width: 600px;">
+            <button id="toggle-fav-filter" class="glass-btn" style="padding: 1rem 1.5rem;">Favoriten</button>
         </div>
 
         <div id="loading" class="loading-spinner">Lade Länderdaten...</div>
-        
+
         <div class="mini-grid" id="mini-container"></div>
         <div class="countries-grid" id="countries-container" style="display: none;"></div>
     </main>
@@ -46,7 +55,9 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.43/moment-timezone-with-data.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.43/moment-timezone-with-data.min.js"></script>
     <script src="script.js?v=3"></script>
 </body>
+
 </html>

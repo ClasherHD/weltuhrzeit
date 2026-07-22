@@ -350,6 +350,7 @@ async function initDetails() {
     const countryParam = urlParams.get('country');
     const country = allCountries.find(c => c.id === countryParam);
     if (country) {
+        syncMinecraftVideo(country.tz, true);
         const detailFav = document.getElementById('detail-fav');
         if (detailFav) {
             const isFav = favorites.includes(country.id);
@@ -501,8 +502,8 @@ function initCookieConsent() {
                     <h3>Privatsphäre & Tracking</h3>
                     <p>Diese Website verwendet Google Analytics, um zu verstehen, welche Länder am häufigsten aufgerufen werden und wie viele Besucher wir haben. Die Daten werden anonymisiert erfasst.</p>
                     <div class="cookie-buttons">
-                        <button id="cookie-accept" class="glass-btn" style="background: rgba(46, 204, 113, 0.2); border-color: rgba(46, 204, 113, 0.5); color: #2ecc71;">Erlauben & Unterstützen</button>
-                        <button id="cookie-decline" class="glass-btn" style="background: rgba(231, 76, 60, 0.2); border-color: rgba(231, 76, 60, 0.5); color: #e74c3c;">Nur essenzielle</button>
+                        <button id="cookie-accept" class="glass-btn">Erlauben & Unterstützen</button>
+                        <button id="cookie-decline" class="glass-btn">Nur essenzielle</button>
                     </div>
                 </div>
             </div>
@@ -523,4 +524,66 @@ function initCookieConsent() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', initCookieConsent);
+let currentSyncTz = null;
+let lastTargetTime = -1;
+
+function syncMinecraftVideo(targetTz, forceSync = false) {
+    if (targetTz !== undefined) {
+        currentSyncTz = targetTz;
+    }
+    const video = document.getElementById('mc-video-bg');
+    if (!video || !video.duration) return;
+
+    // Ensure video is paused so it doesn't drift at 1x speed and force constant seek loops
+    if (!video.paused) {
+        video.pause();
+    }
+
+    const nowDate = new Date();
+    let hours;
+    
+    if (currentSyncTz) {
+        try {
+            const countryTimeStr = nowDate.toLocaleString('en-US', { timeZone: currentSyncTz });
+            const countryDate = new Date(countryTimeStr);
+            hours = countryDate.getHours() + countryDate.getMinutes() / 60 + countryDate.getSeconds() / 3600;
+        } catch(e) {
+            hours = nowDate.getHours() + nowDate.getMinutes() / 60 + nowDate.getSeconds() / 3600;
+        }
+    } else {
+        hours = nowDate.getHours() + nowDate.getMinutes() / 60 + nowDate.getSeconds() / 3600;
+    }
+
+    // Video 0 to 24000 ticks: 06:00 AM to 06:00 AM
+    let progress;
+    if (hours >= 6) {
+        progress = (hours - 6) / 24;
+    } else {
+        progress = (hours + 18) / 24;
+    }
+
+    const targetTime = progress * video.duration;
+
+    // Only update frame if time moved noticeably (> 0.2s) or forced, preventing decoder lag
+    if (forceSync || lastTargetTime < 0 || Math.abs(targetTime - lastTargetTime) >= 0.2) {
+        lastTargetTime = targetTime;
+        video.currentTime = targetTime;
+    }
+}
+
+function updateMinecraftSky() {
+    syncMinecraftVideo();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initCookieConsent();
+    syncMinecraftVideo(undefined, true);
+
+    // Update time-synced frame every 5 seconds (ultra lightweight, 0% CPU, 0 lag)
+    setInterval(() => syncMinecraftVideo(), 5000);
+
+    const video = document.getElementById('mc-video-bg');
+    if (video) {
+        video.addEventListener('loadedmetadata', () => syncMinecraftVideo(undefined, true), { once: true });
+    }
+});
