@@ -118,7 +118,7 @@ function createFullCardHTML(country, prefix) {
     const isFav = favorites.includes(country.id);
     return `
         <div class="card glass" style="position: relative; width: 100%;">
-            <button id="${prefix}fav-${country.id}" class="fav-btn ${isFav ? 'active' : ''}" style="${prefix === 'modal-' ? 'left: 10px; right: auto;' : ''}" onclick="toggleFavorite('${country.id}', event)">${isFav ? '⭐' : '☆'}</button>
+            <button id="${prefix}fav-${country.id}" class="fav-btn ${isFav ? 'active' : ''}" style="${prefix === 'modal-' ? 'right: 48px; left: auto;' : ''}" onclick="toggleFavorite('${country.id}', event)">${isFav ? '⭐' : '☆'}</button>
             ${prefix === 'modal-' ? '<button class="close-btn" onclick="closeModal()">×</button>' : ''}
             <div class="country-info">
                 <img src="${country.flag}" width="40" alt="${country.name} Flagge" class="flag-img">
