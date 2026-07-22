@@ -3,6 +3,7 @@
     src: url('minecraft.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 :root {
@@ -12,7 +13,7 @@
     --text-muted: #94a3b8;
     --glass-bg: rgba(255, 255, 255, 0.05);
     --glass-border: rgba(255, 255, 255, 0.1);
-    --font-main: 'Mojangles', monospace;
+    --font-main: 'Outfit', 'Mojangles', sans-serif;
 }
 
 * {
