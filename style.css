@@ -234,6 +234,7 @@ header h1 {
     color: #ffff55;
     text-shadow: 2px 2px 0px #3f3f00, 2px 2px 0px #000000;
     text-transform: uppercase;
+    word-break: break-word;
 }
 
 /* Time Display */
@@ -267,6 +268,15 @@ header h1 {
     margin: 0.5rem 0;
 }
 
+.section-subtitle {
+    font-family: var(--font-header);
+    font-size: 0.95rem;
+    color: var(--text-gold);
+    text-shadow: 2px 2px 0px #3f3f00, 2px 2px 0px #000000;
+    text-align: center;
+    margin: 0.5rem 0;
+}
+
 /* Meta Grid */
 .meta-grid {
     display: grid;
@@ -274,6 +284,10 @@ header h1 {
     gap: 1.2rem 2rem;
     width: 100%;
     margin-top: 0.5rem;
+}
+
+.secondary-meta {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
 .meta-item {
@@ -297,6 +311,7 @@ header h1 {
 .meta-text {
     display: flex;
     flex-direction: column;
+    min-width: 0;
 }
 
 .meta-label {
@@ -312,24 +327,28 @@ header h1 {
     font-size: 1.05rem;
     color: #ffffff;
     text-shadow: 1px 1px 0px #000000;
-}
-
-/* Mobile adjustments */
-@media (max-width: 600px) {
-    .meta-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
+    word-break: break-word;
 }
 
 /* Minecraft Chat / Anvil Search Input */
 .search-container {
     width: 100%;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.fav-filter-btn {
+    white-space: nowrap;
+    padding: 0.85rem 1.25rem;
 }
 
 .glass-input {
+    flex: 1;
     width: 100%;
+    max-width: 600px;
     padding: 0.85rem 1.25rem;
     border-radius: 0;
     background: #000000;
@@ -437,6 +456,8 @@ header h1 {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease;
+    padding: 1rem;
+    overflow-y: auto;
 }
 
 .modal-overlay.active {
@@ -445,8 +466,10 @@ header h1 {
 }
 
 .modal-content {
-    width: 95%;
+    width: 100%;
     max-width: 650px;
+    max-height: 90vh;
+    overflow-y: auto;
     transform: scale(0.85);
     opacity: 0;
     transition: all 0.2s ease;
@@ -597,4 +620,161 @@ header h1 {
 @keyframes cookieScaleUp {
     from { transform: scale(0.9); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
+}
+
+/* Comprehensive Mobile Responsiveness */
+@media (max-width: 600px) {
+    .container {
+        width: 96%;
+        padding: 0.85rem;
+        margin: 0.5rem auto;
+        gap: 1rem;
+    }
+
+    header h1 {
+        font-size: 1.35rem;
+        letter-spacing: 0.5px;
+    }
+
+    .controls {
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+        gap: 0.5rem;
+    }
+
+    .controls .glass-btn {
+        font-size: 0.65rem;
+        padding: 0.6rem 0.85rem;
+    }
+
+    .search-container {
+        flex-direction: row;
+        gap: 0.5rem;
+    }
+
+    .glass-input {
+        font-size: 0.95rem;
+        padding: 0.7rem 0.85rem;
+    }
+
+    .fav-filter-btn {
+        font-size: 0.65rem;
+        padding: 0.7rem 0.85rem;
+    }
+
+    .card, .glass {
+        padding: 1.1rem 0.9rem;
+        gap: 1rem;
+    }
+
+    .country-name {
+        font-size: 0.85rem;
+    }
+
+    .greeting {
+        font-size: 0.55rem;
+    }
+
+    .flag-img {
+        width: 38px;
+    }
+
+    .time {
+        font-size: 1.65rem;
+        letter-spacing: 1px;
+    }
+
+    .date {
+        font-size: 0.95rem;
+    }
+
+    .section-subtitle {
+        font-size: 0.8rem;
+    }
+
+    .meta-grid {
+        grid-template-columns: 1fr;
+        gap: 0.6rem;
+    }
+
+    .meta-item {
+        padding: 0.45rem 0.6rem;
+        gap: 0.6rem;
+    }
+
+    .meta-icon {
+        font-size: 1.15rem;
+    }
+
+    .meta-label {
+        font-size: 0.75rem;
+    }
+
+    .meta-value {
+        font-size: 0.9rem;
+    }
+
+    .mini-grid {
+        grid-template-columns: repeat(auto-fill, minmax(62px, 1fr));
+        gap: 6px;
+    }
+
+    .mini-card {
+        padding: 8px 3px;
+    }
+
+    .mini-flag {
+        width: 26px;
+    }
+
+    .mini-code {
+        font-size: 0.55rem;
+    }
+
+    .fav-btn, .close-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 0.85rem;
+    }
+
+    .cookie-banner {
+        padding: 1.25rem 1rem;
+    }
+
+    .cookie-content h3 {
+        font-size: 0.95rem;
+    }
+
+    .cookie-content p {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 380px) {
+    header h1 {
+        font-size: 1.15rem;
+    }
+
+    .search-container {
+        flex-direction: column;
+    }
+
+    .search-container .glass-input,
+    .search-container .fav-filter-btn {
+        width: 100%;
+    }
+
+    .time {
+        font-size: 1.45rem;
+    }
+
+    .mini-grid {
+        grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+        gap: 4px;
+    }
+
+    .mini-card {
+        padding: 6px 2px;
+    }
 }
